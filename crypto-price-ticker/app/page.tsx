@@ -1,5 +1,6 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { BitcoinPrice, EthereumPrice } from './api.tsx';
 
 const user = {
   name: 'Placeholder',
@@ -44,7 +45,7 @@ export default function Example() {
                   <img
                     alt="Your Company"
                     src="https://www.sparksystems.sg/wp-content/uploads/2020/12/sparksystems-white-logo.png"
-                    className="size-16"
+                    className="max-w-40"
                   />
                 </div>
                 <div className="hidden md:block">
@@ -174,47 +175,17 @@ export default function Example() {
         <main>
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex">
             {/* Card 1 */}
-            <div class="max-w-sm rounded overflow-hidden shadow-lg">
-              <div class="px-6 py-4">
-                <div class="font-bold text-xl mb-2">Bitcoin to USD</div>
-                <p class="text-gray-700 text-base">
-                  <table class="table-auto w-full">
-                    <thead>
-                      <tr>
-                        <th class="pr-4">Bid</th>
-                        <th>Ask</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="pr-4">99999.99</td>
-                        <td>99999.99</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </p>
+            <div className="max-w-sm rounded overflow-hidden shadow-lg">
+              <div className="px-6 py-4">
+                <div className="font-bold text-xl mb-2">Bitcoin to USD</div>
+                <BitcoinPrice></BitcoinPrice>
               </div>
             </div>
             {/* Card 2 */}
-            <div class="max-w-sm rounded overflow-hidden shadow-lg">
-              <div class="px-6 py-4">
-                <div class="font-bold text-xl mb-2">Ethereum to USD</div>
-                <p class="text-gray-700 text-base">
-                  <table class="table-auto w-full">
-                    <thead>
-                      <tr>
-                        <th class="pr-4">Bid</th>
-                        <th>Ask</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td class="pr-4">99999.99</td>
-                        <td>99999.99</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </p>
+            <div className="max-w-sm rounded overflow-hidden shadow-lg">
+              <div className="px-6 py-4">
+                <div className="font-bold text-xl mb-2">Ethereum to USD</div>
+                <EthereumPrice></EthereumPrice>
               </div>
             </div>
           </div>
