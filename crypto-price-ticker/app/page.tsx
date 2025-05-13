@@ -1,12 +1,11 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { BitcoinPrice, EthereumPrice } from './api.tsx';
+import CryptoPrice from './api';
 
 const user = {
   name: 'Placeholder',
-  email: 'placeholder@example.com'//,
-  // imageUrl:
-  //   '',
+  email: 'placeholder@example.com',
+  imageUrl: null
 }
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
@@ -20,6 +19,8 @@ const userNavigation = [
   { name: 'Settings', href: '#' },
   { name: 'Sign out', href: '#' },
 ]
+
+const pairs = [{url: 'XBTUSD', endpoint: 'XXBTZUSD'}, {url: 'ETHUSDC', endpoint: 'ETHUSDC'}];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -174,20 +175,14 @@ export default function Example() {
         </header>
         <main>
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex">
-            {/* Card 1 */}
-            <div className="max-w-sm rounded overflow-hidden shadow-lg">
-              <div className="px-6 py-4">
-                <div className="font-bold text-xl mb-2">Bitcoin to USD</div>
-                <BitcoinPrice></BitcoinPrice>
+            {pairs.map((value) => (
+              <div key={value.url} className="max-w-sm rounded overflow-hidden shadow-lg">
+                <div className="px-6 py-4">
+                  <div className="font-bold text-xl mb-2">{value.url}</div>
+                  <CryptoPrice pairs={value}></CryptoPrice>
+                </div>
               </div>
-            </div>
-            {/* Card 2 */}
-            <div className="max-w-sm rounded overflow-hidden shadow-lg">
-              <div className="px-6 py-4">
-                <div className="font-bold text-xl mb-2">Ethereum to USD</div>
-                <EthereumPrice></EthereumPrice>
-              </div>
-            </div>
+            ))}
           </div>
         </main>
       </div>
