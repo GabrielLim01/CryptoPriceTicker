@@ -1,29 +1,44 @@
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import CryptoPrice from './api';
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuItems,
+} from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import CryptoPrice from "./api";
+import { WebSocketDemo1 } from "./websocket_demo1";
+import WebSocketDemo2 from "./websocket_demo2";
+import WebSocketDemo3 from "./websocket_demo3";
+import { WebSocketDemo4 } from "./websocket_api_test";
 
 const user = {
-  name: 'Placeholder',
-  email: 'placeholder@example.com',
-  imageUrl: null
-}
+  name: "Placeholder",
+  email: "placeholder@example.com",
+  imageUrl: null,
+};
 const navigation = [
-  { name: 'Dashboard', href: '#', current: true },
-  { name: 'Placeholder1', href: '#', current: false },
-  { name: 'Placeholder2', href: '#', current: false },
-  { name: 'Placeholder3', href: '#', current: false },
-  { name: 'Placeholder4', href: '#', current: false },
-]
+  { name: "Dashboard", href: "#", current: true },
+  { name: "Placeholder1", href: "#", current: false },
+  { name: "Placeholder2", href: "#", current: false },
+  { name: "Placeholder3", href: "#", current: false },
+  { name: "Placeholder4", href: "#", current: false },
+];
 const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
-]
+  { name: "Your Profile", href: "#" },
+  { name: "Settings", href: "#" },
+  { name: "Sign out", href: "#" },
+];
 
-const pairs = [{url: 'XBTUSD', endpoint: 'XXBTZUSD'}, {url: 'ETHUSDC', endpoint: 'ETHUSDC'}];
+const pairs = [
+  { id: 1, title: "Bitcoin <-> USD", pair: "XBTUSD", result: "XXBTZUSD" },
+  { id: 2, title: "Ethereum <-> USD", pair: "ETHUSDC", result: "ETHUSDC" },
+];
 
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export default function Example() {
@@ -55,10 +70,12 @@ export default function Example() {
                       <a
                         key={item.name}
                         href={item.href}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium',
+                          item.current
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "rounded-md px-3 py-2 text-sm font-medium"
                         )}
                       >
                         {item.name}
@@ -84,7 +101,11 @@ export default function Example() {
                       <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
-                        <img alt="" src={user.imageUrl} className="size-8 rounded-full" />
+                        <img
+                          alt=""
+                          src={user.imageUrl}
+                          className="size-8 rounded-full"
+                        />
                       </MenuButton>
                     </div>
                     <MenuItems
@@ -110,8 +131,14 @@ export default function Example() {
                 <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
                   <span className="absolute -inset-0.5" />
                   <span className="sr-only">Open main menu</span>
-                  <Bars3Icon aria-hidden="true" className="block size-6 group-data-open:hidden" />
-                  <XMarkIcon aria-hidden="true" className="hidden size-6 group-data-open:block" />
+                  <Bars3Icon
+                    aria-hidden="true"
+                    className="block size-6 group-data-open:hidden"
+                  />
+                  <XMarkIcon
+                    aria-hidden="true"
+                    className="hidden size-6 group-data-open:block"
+                  />
                 </DisclosureButton>
               </div>
             </div>
@@ -124,10 +151,12 @@ export default function Example() {
                   key={item.name}
                   as="a"
                   href={item.href}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium',
+                    item.current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block rounded-md px-3 py-2 text-base font-medium"
                   )}
                 >
                   {item.name}
@@ -137,11 +166,19 @@ export default function Example() {
             <div className="border-t border-gray-700 pt-4 pb-3">
               <div className="flex items-center px-5">
                 <div className="shrink-0">
-                  <img alt="" src={user.imageUrl} className="size-10 rounded-full" />
+                  <img
+                    alt=""
+                    src={user.imageUrl}
+                    className="size-10 rounded-full"
+                  />
                 </div>
                 <div className="ml-3">
-                  <div className="text-base/5 font-medium text-white">{user.name}</div>
-                  <div className="text-sm font-medium text-gray-400">{user.email}</div>
+                  <div className="text-base/5 font-medium text-white">
+                    {user.name}
+                  </div>
+                  <div className="text-sm font-medium text-gray-400">
+                    {user.email}
+                  </div>
                 </div>
                 <button
                   type="button"
@@ -170,22 +207,36 @@ export default function Example() {
 
         <header className="bg-white shadow-sm">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Crypto Price Tracker</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+              Crypto Price Tracker
+            </h1>
           </div>
         </header>
         <main>
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex">
             {pairs.map((value) => (
-              <div key={value.url} className="max-w-sm rounded overflow-hidden shadow-lg">
+              <div
+                key={value.id}
+                className="max-w-sm rounded overflow-hidden shadow-lg"
+              >
                 <div className="px-6 py-4">
-                  <div className="font-bold text-xl mb-2">{value.url}</div>
+                  <div className="font-bold text-xl mb-2">{value.title}</div>
                   <CryptoPrice pairs={value}></CryptoPrice>
                 </div>
               </div>
             ))}
           </div>
+          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            {/* <WebSocketDemo1></WebSocketDemo1>
+            <hr />
+            <WebSocketDemo2></WebSocketDemo2>
+            <hr />
+            <WebSocketDemo3></WebSocketDemo3> */}
+            <hr /><br />
+            <WebSocketDemo4></WebSocketDemo4>
+          </div>
         </main>
       </div>
     </>
-  )
+  );
 }
