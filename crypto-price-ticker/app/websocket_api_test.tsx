@@ -20,16 +20,16 @@ export const WebSocketDemo4 = () => {
   const [currentPrice, setCurrentPrice] = useState([]);
   const [prevPrice, setPrevPrice] = useState([]);
   const [priceHistory, setPriceHistory] = useState([]);
+  const [colorIndicators, setColorIndicators] = useState([]);
 
-  const messagesEndRef = useRef<null | HTMLDivElement>(null)
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
-
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
-    scrollToBottom()
+    scrollToBottom();
     if (lastMessage !== null) {
       setMessageHistory((prev) => prev.concat(lastMessage));
 
@@ -58,13 +58,31 @@ export const WebSocketDemo4 = () => {
             JSON.stringify(json.data[0].ask),
             JSON.stringify(json.data[0].ask_qty),
           ];
-          // let newPriceHistory = ['a','b','c','d'];
 
           setCurrentPrice(newPrice);
           console.log("Current Price: " + newPrice);
 
           setPriceHistory((prev) => prev.concat([currentPrice]));
           console.log("Price History: " + priceHistory);
+
+          let colorIndicators = [];
+
+          for (let i = 0; i < prevPrice.length; i++) {
+            for (let j = 0; j < currentPrice.length; j++) {
+              if (i == j) {
+                if (prevPrice[i] > currentPrice[j]) {
+                  colorIndicators[i] = "bg-green-300";
+                } else if (prevPrice[i] == currentPrice[j]) {
+                  colorIndicators[i] = "";
+                } else {
+                  colorIndicators[i] = "bg-red-300";
+                }
+              }
+            }
+          }
+
+          console.log("Current color indicators: " + colorIndicators);
+          setColorIndicators((prev) => prev.concat([colorIndicators]));
 
           // priceHistory.map(x => console.log(x));
         }
@@ -197,30 +215,30 @@ export const WebSocketDemo4 = () => {
             </tr>
           </thead>
           <tbody>
-            {priceHistory.map((value) => {
-              
-              // console.log("Current value: " + value[0]);
-              // console.log("Previous value: " + prevPrice[0]);
+            {priceHistory.map((value, index) => {
+              const color = colorIndicators[index];
 
-              // let color = "";
-              // if (value[0] > prevPrice[0]){
-              //   color='`bg-red-300'
-              // } else if (value[0] == prevPrice[0]){
-              //   color = '';
-              // } else {
-              //   color='bg-green-300'
-              // }
-
+              if (color != undefined) {
+                return (
+                  <tr key={value}>
+                    <td className={`pr-4 ${color[0]}`}>{value[0]}</td>
+                    <td className={color[1]}>{value[1]}</td>
+                    <td className={color[2]}>{value[2]}</td>
+                    <td className={color[3]}>{value[3]}</td>
+                  </tr>
+                );
+              } else {
               return (
                 <tr key={value}>
-                  {/* <td className={`pr-4 ${color}`}>{value[0]}</td> */}
                   <td className={`pr-4`}>{value[0]}</td>
                   <td>{value[1]}</td>
                   <td>{value[2]}</td>
                   <td>{value[3]}</td>
                 </tr>
               );
+                }
             })}
+            
           </tbody>
         </table>
         <div ref={messagesEndRef} />
