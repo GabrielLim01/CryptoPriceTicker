@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
 export const WebSocketDemo4 = () => {
@@ -16,9 +16,20 @@ export const WebSocketDemo4 = () => {
   const [bidPrice, setBidPrice] = useState(null);
   const [askQuantity, setAskQuantity] = useState(null);
   const [bidQuantity, setBidQuantity] = useState(null);
+
+  const [currentPrice, setCurrentPrice] = useState([]);
+  const [prevPrice, setPrevPrice] = useState([]);
   const [priceHistory, setPriceHistory] = useState([]);
 
+  const messagesEndRef = useRef<null | HTMLDivElement>(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+
   useEffect(() => {
+    scrollToBottom()
     if (lastMessage !== null) {
       setMessageHistory((prev) => prev.concat(lastMessage));
 
@@ -33,22 +44,29 @@ export const WebSocketDemo4 = () => {
         // console.log(json.data[0].ask);
         // console.log(json.data[0].bid);
         if (json.data[0].ask != undefined) {
+          setPrevPrice(currentPrice);
+          console.log("Prev Price: " + prevPrice);
+
           setAskPrice(json.data[0].ask);
           setBidPrice(json.data[0].bid);
           setAskQuantity(json.data[0].ask_qty);
           setBidQuantity(json.data[0].bid_qty);
 
-          let priceHistory = JSON.stringify(
-            json.data[0].bid +
-              ", " +
-              json.data[0].bid_qty +
-              ", " +
-              json.data[0].ask +
-              ", " +
-              json.data[0].ask_qty
-          );
-          console.log("Price history: " + priceHistory);
-          setPriceHistory((prev) => prev.concat(priceHistory));
+          let newPrice = [
+            JSON.stringify(json.data[0].bid),
+            JSON.stringify(json.data[0].bid_qty),
+            JSON.stringify(json.data[0].ask),
+            JSON.stringify(json.data[0].ask_qty),
+          ];
+          // let newPriceHistory = ['a','b','c','d'];
+
+          setCurrentPrice(newPrice);
+          console.log("Current Price: " + newPrice);
+
+          setPriceHistory((prev) => prev.concat([currentPrice]));
+          console.log("Price History: " + priceHistory);
+
+          // priceHistory.map(x => console.log(x));
         }
       }
     }
@@ -105,6 +123,7 @@ export const WebSocketDemo4 = () => {
       </button>
       {/* <button
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded"
+        onClick={}
         disabled={readyState !== ReadyState.CLOSED}
       >
         Close WebSocket Connection
@@ -178,16 +197,33 @@ export const WebSocketDemo4 = () => {
             </tr>
           </thead>
           <tbody>
-            {priceHistory.map((x) => (
-              <tr key={x}>
-                <td className="pr-4">{x.split(",")[0].slice(1)}</td>
-                <td>{x.split(",")[1]}</td>
-                <td>{x.split(",")[2]}</td>
-                <td>{x.split(",")[3].slice(0, -1)}</td>
-              </tr>
-            ))}
+            {priceHistory.map((value) => {
+              
+              // console.log("Current value: " + value[0]);
+              // console.log("Previous value: " + prevPrice[0]);
+
+              // let color = "";
+              // if (value[0] > prevPrice[0]){
+              //   color='`bg-red-300'
+              // } else if (value[0] == prevPrice[0]){
+              //   color = '';
+              // } else {
+              //   color='bg-green-300'
+              // }
+
+              return (
+                <tr key={value}>
+                  {/* <td className={`pr-4 ${color}`}>{value[0]}</td> */}
+                  <td className={`pr-4`}>{value[0]}</td>
+                  <td>{value[1]}</td>
+                  <td>{value[2]}</td>
+                  <td>{value[3]}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
+        <div ref={messagesEndRef} />
       </div>
     </div>
   );
