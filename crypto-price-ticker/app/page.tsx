@@ -232,7 +232,6 @@ export default function Example() {
             <WebSocketDemo2></WebSocketDemo2>
             <hr />
             <WebSocketDemo3></WebSocketDemo3> */}
-            <hr /><br />
             <WebSocketDemo4></WebSocketDemo4>
           </div>
         </main>
