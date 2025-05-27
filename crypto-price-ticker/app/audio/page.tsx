@@ -1,7 +1,9 @@
+'use client';
+
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import CryptoPrice from "./api";
-import { WebSocket } from "./websocket_api";
+import { useState } from 'react';
+import { WebSocket } from "../websocket_api";
 
 const user = {
   name: "Placeholder",
@@ -9,8 +11,8 @@ const user = {
   imageUrl: null,
 };
 const navigation = [
-  { name: "Dashboard", href: "/", current: true },
-  { name: "Audio", href: "audio", current: false },
+  { name: "Dashboard", href: "/", current: false },
+  { name: "Audio", href: "audio", current: true },
   { name: "Placeholder2", href: "#", current: false },
   { name: "Placeholder3", href: "#", current: false },
   { name: "Placeholder4", href: "#", current: false },
@@ -21,26 +23,21 @@ const userNavigation = [
   { name: "Sign out", href: "#" },
 ];
 
-const pairs = [
-  { id: 1, title: "Bitcoin <-> USD", pair: "XBTUSD", result: "XXBTZUSD" },
-  { id: 2, title: "Ethereum <-> USD", pair: "ETHUSDC", result: "ETHUSDC" },
-];
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function Audio() {
+
+  const [isUpdated, setIsUpdated] = useState(false);
+
+  const handlePlay = () => {
+    const audio = new window.Audio("/audio.mp3");
+    audio.play();
+  };
+
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
       <div className="min-h-full">
         <Disclosure as="nav" className="bg-gray-800">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -139,22 +136,15 @@ export default function Example() {
 
         <header className="bg-white shadow-sm">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Crypto Price Tracker</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Audio Test</h1>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handlePlay}>
+              Play
+            </button>
           </div>
         </header>
         <main>
-          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex">
-            {pairs.map((value) => (
-              <div key={value.id} className="max-w-sm rounded overflow-hidden shadow-lg">
-                <div className="px-6 py-4">
-                  <div className="font-bold text-xl mb-2">{value.title}</div>
-                  <CryptoPrice pairs={value}></CryptoPrice>
-                </div>
-              </div>
-            ))}
-          </div>
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <WebSocket></WebSocket>
+            <WebSocket audio={handlePlay}></WebSocket>
           </div>
         </main>
       </div>

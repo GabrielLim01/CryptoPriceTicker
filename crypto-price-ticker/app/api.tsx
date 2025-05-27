@@ -13,9 +13,7 @@ const CryptoPrice = ({ pairs }) => {
 
   const fetchPrice = async () => {
     try {
-      const response = await axios.get(
-        "https://api.kraken.com/0/public/Ticker?pair=" + pairs.pair
-      );
+      const response = await axios.get("https://api.kraken.com/0/public/Ticker?pair=" + pairs.pair);
       setAskPrice(response.data.result[pairs.result].a[0]);
       setBidPrice(response.data.result[pairs.result].b[0]);
     } catch (error) {
