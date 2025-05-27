@@ -11,7 +11,6 @@ export const WebSocket = ({ audio }) => {
 
   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
 
-  // Added May 16, 2025, 9:30am
   const [askPrice, setAskPrice] = useState(null);
   const [bidPrice, setBidPrice] = useState(null);
   const [askQuantity, setAskQuantity] = useState(null);
@@ -24,43 +23,30 @@ export const WebSocket = ({ audio }) => {
 
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  // const scrollToBottom = () => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // };
 
   useEffect(() => {
     // scrollToBottom();
     if (lastMessage !== null) {
       setMessageHistory((prev) => prev.concat(lastMessage));
-
-      // console.log("Data received!");
-      // console.log("TYPE OF: " + typeof(lastMessage.data));
-      // console.log("DATA: " + lastMessage.data);
-
-      let json = JSON.parse(lastMessage.data);
+      const json = JSON.parse(lastMessage.data);
 
       if (json.data != null) {
-        // console.log(json.data);
-        // console.log(json.data[0].ask);
-        // console.log(json.data[0].bid);
         if (json.data[0].ask != undefined) {
           setPrevPrice(currentPrice);
-          console.log("Prev Price: " + prevPrice);
-
           setAskPrice(json.data[0].ask);
           setBidPrice(json.data[0].bid);
           setAskQuantity(json.data[0].ask_qty);
           setBidQuantity(json.data[0].bid_qty);
 
-          let newPrice = [JSON.stringify(json.data[0].bid), JSON.stringify(json.data[0].bid_qty), JSON.stringify(json.data[0].ask), JSON.stringify(json.data[0].ask_qty)];
+          const newPrice = [JSON.stringify(json.data[0].bid), JSON.stringify(json.data[0].bid_qty), JSON.stringify(json.data[0].ask), JSON.stringify(json.data[0].ask_qty)];
 
           setCurrentPrice(newPrice);
-          console.log("Current Price: " + newPrice);
-
           setPriceHistory((prev) => prev.concat([currentPrice]));
-          console.log("Price History: " + priceHistory);
 
-          let colorIndicators = [];
+          const colorIndicators = [];
 
           for (let i = 0; i < prevPrice.length; i++) {
             for (let j = 0; j < currentPrice.length; j++) {
@@ -76,14 +62,11 @@ export const WebSocket = ({ audio }) => {
             }
           }
 
-          console.log("Current color indicators: " + colorIndicators);
           setColorIndicators((prev) => prev.concat([colorIndicators]));
 
           if (audio !== undefined) {
             audio();
           }
-
-          // priceHistory.map(x => console.log(x));
         }
       }
     }
@@ -91,8 +74,6 @@ export const WebSocket = ({ audio }) => {
 
   const handleClickChangeSocketUrl = useCallback(() => setSocketUrl("wss://ws.kraken.com/v2"), []);
 
-  // wrong string message
-  // const handleClickSendMessage = useCallback(() => sendMessage("Hello"), []);
   const handleClickSendMessage = useCallback(
     () =>
       sendMessage(
@@ -103,8 +84,6 @@ export const WebSocket = ({ audio }) => {
       ),
     []
   );
-  //{"method":"subscribe","params":{"channel":"ticker","symbol":["BTC/USD"]}}
-  // Can't pass array of objects into a WebSocket message?
 
   const connectionStatus = {
     [ReadyState.CONNECTING]: "Connecting",

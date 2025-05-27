@@ -3,7 +3,7 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from 'react';
-import { WebSocket } from "../websocket_api";
+import { WebSocket } from "../Websocket";
 
 const user = {
   name: "Placeholder",
