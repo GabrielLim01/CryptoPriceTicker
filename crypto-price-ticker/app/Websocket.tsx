@@ -3,7 +3,7 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
-export const WebSocket = ({ audio }) => {
+export const WebSocket = ({ notification }) => {
   //Public API that will echo messages sent to it back to the client
   const [socketUrl, setSocketUrl] = useState("wss://ws.kraken.com/v2");
   // const [messageHistory, setMessageHistory] = useState<MessageEvent<any>[]>[];
@@ -63,9 +63,9 @@ export const WebSocket = ({ audio }) => {
           }
 
           setColorIndicators((prev) => prev.concat([colorIndicators]));
-
-          if (audio !== undefined) {
-            audio();
+          if (notification !== undefined){
+            console.log("Playing Audio from Websocket");
+            notification();
           }
         }
       }

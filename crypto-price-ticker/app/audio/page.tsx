@@ -2,8 +2,9 @@
 
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useState } from 'react';
 import { WebSocket } from "../Websocket";
+import { useState, useEffect } from "react";
+import Notification from "./Notification";
 
 const user = {
   name: "Placeholder",
@@ -27,14 +28,27 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Audio() {
+//   const handlePlay = () => {
+//     const audio = new window.Audio("/audio.mp3");
+//     audio.play();
+//   };
 
-  const [isUpdated, setIsUpdated] = useState(false);
+export default function AudioPage() {
+  //const [playAudio, setPlayAudio] = useState(false);
 
-  const handlePlay = () => {
-    const audio = new window.Audio("/audio.mp3");
+  // Can't handle audio playbacks with states due to echo effect? true -> false -> true, 2 procs per playback
+  const handleAudio = () => {
+    // setPlayAudio(true);
+    const audio = new window.Audio("/notification-2.mp3");
     audio.play();
   };
+
+  // useEffect(() => {
+  //   console.log("Playing Audio");
+  //   const audio = new window.Audio("/notification-2.mp3");
+  //   audio.play();
+  //   // setPlayAudio(false);
+  // }, [playAudio]);
 
   return (
     <>
@@ -137,14 +151,14 @@ export default function Audio() {
         <header className="bg-white shadow-sm">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">Audio Test</h1>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handlePlay}>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleAudio}>
               Play
             </button>
           </div>
         </header>
         <main>
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <WebSocket audio={handlePlay}></WebSocket>
+            <WebSocket notification={handleAudio}></WebSocket>
           </div>
         </main>
       </div>
